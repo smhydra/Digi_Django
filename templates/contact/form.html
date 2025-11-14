@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        textarea {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 200px;
+            max-height: 500px;
+        }
+
+        .errorlist {
+            list-style: none;
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .errorlist li {
+            margin: 3px 0;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Text Upload</h1>
+        <p class="subtitle">Share your long paragraphs and text here</p>
+
+        <form method="post" id="uploadForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% if form.title.errors %}
+                    {{ form.title.errors }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                <span class="char-count"><span id="charCount">0</span> characters</span>
+                {% if form.content.errors %}
+                    {{ form.content.errors }}
+                {% endif %}
+            </div>
+
+            <button type="submit">Upload Text</button>
+        </form>
+    </div>
+
+    <script>
+        const contentField = document.getElementById('id_content');
+        const titleField = document.getElementById('id_title');
+        const charCount = document.getElementById('charCount');
+        const uploadForm = document.getElementById('uploadForm');
+
+        if (contentField) {
+            contentField.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+
+            // Ctrl+Enter to submit from textarea
+            contentField.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    uploadForm.submit();
+                }
+            });
+        }
+
+        if (titleField) {
+            // Enter to submit from title field
+            titleField.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    uploadForm.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
