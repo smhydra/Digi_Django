@@ -47,8 +47,8 @@ python manage.py runserver
 ### 6. Access the application:
 - **Upload page**: http://127.0.0.1:8000/
 - **View all submissions**: http://127.0.0.1:8000/submissions/
-- **Admin panel**: http://127.0.0.1:8000/admin/
-  - Default credentials: `admin` / `admin`
+- **Admin panel**: http://127.0.0.1:8000/admin/ ===>
+  - Default credentials:  UserNAme : admin , Password : Manas@754245
 
 ## Project Structure
 - `contact/` - Main app containing models, forms, and views
